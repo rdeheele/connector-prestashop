@@ -523,8 +523,8 @@ class ProductTemplateImporter(Component):
     def _after_import(self, binding):
         super(ProductTemplateImporter, self)._after_import(binding)
         self.import_images(binding)
-        self.import_supplierinfo(binding)
         self.import_combinations()
+        self.import_supplierinfo(binding)
         self.attribute_line(binding)
         self.deactivate_default_product(binding)
         self.checkpoint_default_category_missing(binding)

@@ -86,15 +86,17 @@ class ProductCombinationImporter(Component):
             self.backend_record,
             filters=filters
         )
-        ps_product_template = binding
-        template_id = ps_product_template.product_tmpl_id.id
-        ps_supplierinfos = self.env['prestashop.product.supplierinfo']. \
-            search([('product_tmpl_id', '=', template_id)])
-        for ps_supplierinfo in ps_supplierinfos:
-            try:
-                ps_supplierinfo.resync()
-            except PrestaShopWebServiceError:
-                ps_supplierinfo.odoo_id.unlink()
+        # done in product template after import already (and only once)
+        # else it becomes too slow with big number of variant (like > 50)
+#        ps_product_template = binding
+#        template_id = ps_product_template.product_tmpl_id.id
+#        ps_supplierinfos = self.env['prestashop.product.supplierinfo']. \
+#            search([('product_tmpl_id', '=', template_id)])
+#        for ps_supplierinfo in ps_supplierinfos:
+#            try:
+#                ps_supplierinfo.resync()
+#            except PrestaShopWebServiceError:
+#                ps_supplierinfo.odoo_id.unlink()
 
 
 class ProductCombinationMapper(Component):
