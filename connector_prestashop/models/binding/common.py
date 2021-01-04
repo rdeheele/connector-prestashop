@@ -58,7 +58,6 @@ class PrestashopBinding(models.AbstractModel):
 
     @job(default_channel='root.prestashop')
     @related_action(action='related_action_record')
-    @api.multi
     def export_record(self, fields=None):
         """ Export a record on PrestaShop """
         self.ensure_one()
@@ -76,7 +75,6 @@ class PrestashopBinding(models.AbstractModel):
             return deleter.run(external_id)
 
     # TODO: Research
-    @api.multi
     def resync(self):
         func = self.import_record
         if self.env.context.get('connector_delay'):

@@ -21,7 +21,6 @@ class ProductProduct(models.Model):
         digits=dp.get_precision('Product Price')
     )
 
-    @api.multi
     def update_prestashop_qty(self):
         for product in self:
             if product.product_variant_count > 1:
@@ -35,7 +34,6 @@ class ProductProduct(models.Model):
                     product.product_tmpl_id.prestashop_bind_ids:
                 prestashop_product.recompute_prestashop_qty()
 
-    @api.multi
     def update_prestashop_quantities(self):
         for product in self:
             product_template = product.product_tmpl_id
@@ -52,7 +50,6 @@ class ProductProduct(models.Model):
                         combination_binding.recompute_prestashop_qty()
         return True
 
-    @api.multi
     @api.depends('impact_price', 'product_tmpl_id.list_price')
     def _compute_lst_price(self):
         for product in self:
@@ -68,7 +65,6 @@ class ProductProduct(models.Model):
     lst_price = fields.Float(
         compute='_compute_lst_price')
 
-    @api.multi
     def _set_variants_default_on(self, default_on_list=None):
         if self.env.context.get('skip_check_default_variant', False):
             return True
@@ -96,7 +92,6 @@ class ProductProduct(models.Model):
         res._set_variants_default_on()
         return res
 
-    @api.multi
     def write(self, vals):
         if not vals.get('active', True):
             vals['default_on'] = False
@@ -105,7 +100,6 @@ class ProductProduct(models.Model):
         self._set_variants_default_on(default_on_list)
         return res
 
-    @api.multi
     def unlink(self):
         self.write({
             'default_on': False,
@@ -114,7 +108,6 @@ class ProductProduct(models.Model):
         res = super(ProductProduct, self).unlink()
         return res
 
-    @api.multi
     def open_product_template(self):
         """
         Utility method used to add an "Open Product Template"
