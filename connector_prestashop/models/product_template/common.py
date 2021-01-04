@@ -45,7 +45,6 @@ class ProductTemplate(models.Model):
     def _compute_quantities(self):
         return super(ProductTemplate, self)._compute_quantities()
 
-    @api.multi
     def update_prestashop_quantities(self):
         for template in self:
             # Recompute product template PrestaShop qty
@@ -61,7 +60,6 @@ class ProductQtyMixin(models.AbstractModel):
     _name = 'prestashop.product.qty.mixin'
     _description = 'Prestashop mixin shared between product and template'
 
-    @api.multi
     def recompute_prestashop_qty(self):
         # group products by backend
         backends = defaultdict(set)
@@ -73,7 +71,6 @@ class ProductQtyMixin(models.AbstractModel):
             products._recompute_prestashop_qty_backend(backend)
         return True
 
-    @api.multi
     def _recompute_prestashop_qty_backend(self, backend):
         locations = backend._get_locations_for_stock_quantities()
         self_loc = self.with_context(location=locations.ids,

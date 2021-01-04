@@ -186,7 +186,6 @@ class PrestashopBackend(models.Model):
         if self._origin.id:
             self.fill_matched_fields(self._origin.id)
 
-    @api.multi
     def fill_matched_fields(self, backend_id):
         self.ensure_one()
 
@@ -218,7 +217,6 @@ class PrestashopBackend(models.Model):
     def _default_pricelist_id(self):
         return self.env['product.pricelist'].search([], limit=1)
 
-    @api.multi
     def add_checkpoint(self, record, message=''):
         """
         @param message: used with this
@@ -232,12 +230,10 @@ class PrestashopBackend(models.Model):
             chk_point.message_post(body=message)
         return chk_point
 
-    @api.multi
     def button_reset_to_draft(self):
         self.ensure_one()
         self.write({'state': 'draft'})
 
-    @api.multi
     def synchronize_metadata(self):
         for backend in self:
             for model_name in [
@@ -250,7 +246,6 @@ class PrestashopBackend(models.Model):
                 self.env[model_name].import_batch(backend)
         return True
 
-    @api.multi
     def synchronize_basedata(self):
         for backend in self:
             for model_name in [
@@ -266,7 +261,6 @@ class PrestashopBackend(models.Model):
             self.env['prestashop.sale.order.state'].import_batch(backend)
         return True
 
-    @api.multi
     def _check_connection(self):
         self.ensure_one()
         with self.work_on('prestashop.backend') as work:
@@ -274,13 +268,11 @@ class PrestashopBackend(models.Model):
             with api_handle_errors('Connection failed'):
                 component.head()
 
-    @api.multi
     def button_check_connection(self):
         self._check_connection()
         # raise exceptions.UserError(_('Connection successful'))
         self.write({'state': 'checked'})
 
-    @api.multi
     def import_customers_since(self):
         for backend_record in self:
             since_date = backend_record.import_partners_since
@@ -289,7 +281,6 @@ class PrestashopBackend(models.Model):
                 backend_record=backend_record, since_date=since_date)
         return True
 
-    @api.multi
     def import_products(self):
         for backend_record in self:
             since_date = backend_record.import_products_since
@@ -297,7 +288,6 @@ class PrestashopBackend(models.Model):
             ).import_products(backend_record, since_date)
         return True
 
-    @api.multi
     def import_carriers(self):
         for backend_record in self:
             self.env['prestashop.delivery.carrier'].with_delay().import_batch(
@@ -305,7 +295,6 @@ class PrestashopBackend(models.Model):
             )
         return True
 
-    @api.multi
     def update_product_stock_qty(self):
         for backend_record in self:
             backend_record.env['prestashop.product.template']\
@@ -314,13 +303,11 @@ class PrestashopBackend(models.Model):
                 .with_delay().export_product_quantities(backend=backend_record)
         return True
 
-    @api.multi
     def import_stock_qty(self):
         for backend_record in self:
             backend_record.env['prestashop.product.template']\
                 .with_delay().import_inventory(backend_record)
 
-    @api.multi
     def import_sale_orders(self):
         for backend_record in self:
             since_date = backend_record.import_orders_since
@@ -328,7 +315,6 @@ class PrestashopBackend(models.Model):
             ).import_orders_since(backend_record, since_date)
         return True
 
-    @api.multi
     def import_payment_modes(self):
         now_fmt = fields.Datetime.now()
         for backend_record in self:
@@ -344,7 +330,6 @@ class PrestashopBackend(models.Model):
             backend_record.import_payment_mode_since = now_fmt
         return True
 
-    @api.multi
     def import_refunds(self):
         for backend_record in self:
             since_date = backend_record.import_refunds_since
@@ -352,7 +337,6 @@ class PrestashopBackend(models.Model):
                 backend_record, since_date)
         return True
 
-    @api.multi
     def import_suppliers(self):
         for backend_record in self:
             since_date = backend_record.import_suppliers_since
@@ -396,7 +380,6 @@ class PrestashopBackend(models.Model):
     def _scheduler_import_suppliers(self, domain=None):
         self.search(domain or []).import_suppliers()
 
-    @api.multi
     def _get_locations_for_stock_quantities(self):
         root_location = (self.stock_location_id or
                          self.warehouse_id.lot_stock_id)

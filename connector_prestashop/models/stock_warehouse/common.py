@@ -20,7 +20,6 @@ class PrestashopShop(models.Model):
     _inherit = 'prestashop.binding'
     _description = 'PrestaShop Shop'
 
-    @api.multi
     @api.depends('shop_group_id', 'shop_group_id.backend_id')
     def _compute_backend_id(self):
         for shop in self:

@@ -220,7 +220,6 @@
     <record id="action_prestashop_backend" model="ir.actions.act_window">
         <field name="name">PrestaShop Backends</field>
         <field name="res_model">prestashop.backend</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
     </record>
 
@@ -254,7 +253,6 @@
     <record id="action_prestashop_shop_group" model="ir.actions.act_window">
         <field name="name">PrestaShop Shop Groups</field>
         <field name="res_model">prestashop.shop.group</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
     </record>
 
@@ -295,7 +293,6 @@
     <record id="action_prestashop_shop" model="ir.actions.act_window">
         <field name="name">PrestaShop Shops</field>
         <field name="res_model">prestashop.shop</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
     </record>
 
