@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<openerp>
-    <data>
+<odoo>
+
         <record model="ir.ui.view" id="export_multiple_products_form">
             <field name="name">export.multiple.products.form</field>
             <field name="model">export.multiple.products</field>
@@ -22,12 +22,10 @@
         </record>
         <act_window name="Export Products"
                     res_model="export.multiple.products"
-                    src_model="product.template"
+                    binding_model="product.template"
                     view_mode="form"
                     target="new"
-                    key2="client_action_multi"
-                    id="act_export_multiple_products"
-                    view_id="export_multiple_products_form"/>
+                    id="act_export_multiple_products"/>
 
         <record model="ir.ui.view" id="export_variant_stock_form">
             <field name="name">export.variant.stock.form</field>
@@ -46,12 +44,9 @@
         </record>
         <act_window name="Export Products Stock"
                     res_model="export.multiple.products"
-                    src_model="product.template"
+                    binding_model="product.template"
                     view_mode="form"
                     target="new"
-                    key2="client_action_multi"
-                    id="act_export_products_stock"
-                    view_id="export_variant_stock_form"/>
+                    id="act_export_products_stock"/>
 
-    </data>
-</openerp>
+</odoo>

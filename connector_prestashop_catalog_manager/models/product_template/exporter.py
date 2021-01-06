@@ -3,36 +3,29 @@
 
 from datetime import timedelta
 
-from openerp.addons.connector.unit.mapper import mapping, m2o_to_backend
-
-from openerp.addons.connector_prestashop.\
-    models.product_template.importer import ProductTemplateImporter
-
-from openerp.addons.connector_prestashop.unit.exporter import (
-    export_record,
-    TranslationPrestashopExporter
-)
-from openerp.addons.connector_prestashop.unit.mapper import (
-    TranslationPrestashopExportMapper,
-)
-from openerp.addons.connector_prestashop.backend import prestashop
-from ...consumer import get_slug
+from odoo.addons.component.core import Component
+from odoo.addons.connector.components.mapper import mapping
 
 
-@prestashop
-class ProductTemplateExporter(TranslationPrestashopExporter):
-    _model_name = 'prestashop.product.template'
+class ProductTemplateExporter(Component):
+    _name = 'prestashop.product.template.exporter'
+    _inherit = 'prestashop.exporter'
+    _apply_on = ['prestashop.product.template']
+    _usage = 'template.exporter'
+
+    def run(self, binding):
+        super(ProductTemplateExporter, self).run(binding)
 
     def _create(self, record):
         res = super(ProductTemplateExporter, self)._create(record)
-        self.write_binging_vals(self.binding, record)
+        #self.write_binging_vals(self.binding, record)
         return res['prestashop']['product']['id']
 
     def _update(self, data):
         """ Update an Prestashop record """
         assert self.prestashop_id
-        self.export_variants()
-        self.check_images()
+        #self.export_variants()
+        #self.check_images()
         self.backend_adapter.write(self.prestashop_id, data)
 
     def write_binging_vals(self, erp_record, ps_record):
@@ -54,11 +47,11 @@ class ProductTemplateExporter(TranslationPrestashopExporter):
         if not category:
             return
         category_binder = self.binder_for('prestashop.product.category')
-        ext_id = category_binder.to_backend(category.id, wrap=True)
+        ext_id = category_binder.to_external(category.id, wrap=True)
         if ext_id:
             return ext_id
 
-        ps_categ_obj = self.session.env['prestashop.product.category']
+        """ps_categ_obj = self.session.env['prestashop.product.category']
         position_cat_id = ps_categ_obj.search(
             [], order='position desc', limit=1)
         obj_position = position_cat_id.position + 1
@@ -73,9 +66,10 @@ class ProductTemplateExporter(TranslationPrestashopExporter):
         export_record(
             self.session,
             'prestashop.product.category',
-            binding.id)
+            binding.id)"""
 
     def _parent_length(self, categ):
+        return 1
         if not categ.parent_id:
             return 1
         else:
@@ -84,7 +78,7 @@ class ProductTemplateExporter(TranslationPrestashopExporter):
     def _export_dependencies(self):
         """ Export the dependencies for the product"""
         super(ProductTemplateExporter, self)._export_dependencies()
-        attribute_binder = self.binder_for(
+        """attribute_binder = self.binder_for(
             'prestashop.product.combination.option')
         option_binder = self.binder_for(
             'prestashop.product.combination.option.value')
@@ -103,10 +97,10 @@ class ProductTemplateExporter(TranslationPrestashopExporter):
                 value_ext_id = option_binder.to_backend(value.id, wrap=True)
                 if not value_ext_id:
                     self._export_dependency(
-                        value, 'prestashop.product.combination.option.value')
+                        value, 'prestashop.product.combination.option.value')"""
 
     def export_variants(self):
-        combination_obj = self.session.env['prestashop.product.combination']
+        """combination_obj = self.session.env['prestashop.product.combination']
         for product in self.binding.product_variant_ids:
             if not product.attribute_value_ids:
                 continue
@@ -127,20 +121,20 @@ class ProductTemplateExporter(TranslationPrestashopExporter):
                 self.session,
                 'prestashop.product.combination',
                 combination_ext_id.id, priority=50,
-                eta=timedelta(seconds=20))
+                eta=timedelta(seconds=20))"""
 
     def _not_in_variant_images(self, image):
-        images = []
+        """images = []
         if len(self.binding.product_variant_ids) > 1:
             for product in self.binding.product_variant_ids:
                 images.extend(product.image_ids.ids)
-        return image.id not in images
+        return image.id not in images"""
 
     def check_images(self):
         if self.binding.image_ids:
             image_binder = self.binder_for('prestashop.product.image')
             for image in self.binding.image_ids:
-                image_ext_id = image_binder.to_backend(image.id, wrap=True)
+                image_ext_id = image_binder.to_external(image.id, wrap=True)
                 # `image_ext_id` is ZERO as long as the image is not exported.
                 # Here we delay the export so,
                 # if we don't check this we create 2 records to be sync'ed
@@ -148,31 +142,37 @@ class ProductTemplateExporter(TranslationPrestashopExporter):
                 # ValueError:
                 #   Expected singleton: prestashop.product.image(x, y)
                 if image_ext_id is None:
-                    image_ext_id = self.session.env[
+                    """image_ext_id = self.session.env[
                         'prestashop.product.image'].with_context(
                         connector_no_export=True).create({
                             'backend_id': self.backend_record.id,
                             'odoo_id': image.id,
-                        })
-                    export_record.delay(
+                        })"""
+                    presta_image_obj = self.env['prestashop.product.image']
+                    presta_image_id = presta_image_obj.create({
+                        'backend_id': self.work.collection.id,
+                        'odoo_id': image.id,
+                    })
+                    """export_record.delay(
                         self.session,
                         'prestashop.product.image',
-                        image_ext_id.id, priority=15)
+                        image_ext_id.id, priority=15)"""
 
     def update_quantities(self):
-        if len(self.binding.product_variant_ids) == 1:
+        """if len(self.binding.product_variant_ids) == 1:
             product = self.binding.odoo_id.product_variant_ids[0]
-            product.update_prestashop_quantities()
+            product.update_prestashop_quantities()"""
 
     def _after_export(self):
         self.check_images()
-        self.export_variants()
-        self.update_quantities()
+        #self.export_variants()
+        #self.update_quantities()
 
 
-@prestashop
-class ProductTemplateExportMapper(TranslationPrestashopExportMapper):
-    _model_name = 'prestashop.product.template'
+class ProductTemplateExportMapper(Component):
+    _name = 'prestashop.product.template.export.mapper'
+    _inherit = 'translation.prestashop.export.mapper'
+    _apply_on = ['prestashop.product.template']
 
     direct = [
         ('available_for_order', 'available_for_order'),
@@ -180,16 +180,17 @@ class ProductTemplateExportMapper(TranslationPrestashopExportMapper):
         ('online_only', 'online_only'),
         ('weight', 'weight'),
         ('standard_price', 'wholesale_price'),
-        (m2o_to_backend('default_shop_id'), 'id_shop_default'),
         ('always_available', 'active'),
         ('barcode', 'barcode'),
         ('additional_shipping_cost', 'additional_shipping_cost'),
         ('minimal_quantity', 'minimal_quantity'),
         ('on_sale', 'on_sale'),
-        (m2o_to_backend(
-            'prestashop_default_category_id',
-            binding='prestashop.product.category'), 'id_category_default'),
     ]
+    #m2o_to_backend?
+    #(m2o_to_backend('default_shop_id'), 'id_shop_default'),
+    #(m2o_to_backend(
+    #'prestashop_default_category_id',
+    #binding='prestashop.product.category'), 'id_category_default'),
     # handled by base mapping `translatable_fields`
     _translatable_fields = [
         ('name', 'name'),
@@ -230,7 +231,7 @@ class ProductTemplateExportMapper(TranslationPrestashopExportMapper):
         binder = self.binder_for('prestashop.product.category')
         for category in record.categ_ids:
             ext_categ_ids.append(
-                {'id': binder.to_backend(category.id, wrap=True)})
+                {'id': binder.to_external(category.id, wrap=True)})
         return ext_categ_ids
 
     @mapping
@@ -247,10 +248,10 @@ class ProductTemplateExportMapper(TranslationPrestashopExportMapper):
         if not record.taxes_id:
             return
         binder = self.binder_for('prestashop.account.tax.group')
-        ext_id = binder.to_backend(record.taxes_id[:1].tax_group_id, wrap=True)
+        ext_id = binder.to_external(record.taxes_id[:1].tax_group_id, wrap=True)
         return {'id_tax_rules_group': ext_id}
 
-    @mapping
+    """@mapping
     def available_date(self, record):
         if record.available_date:
             return {'available_date': record.available_date}
@@ -273,10 +274,10 @@ class ProductTemplateExportMapper(TranslationPrestashopExportMapper):
     @mapping
     def extras_manufacturer(self, record):
         mapper = self.unit_for(ManufacturerExportMapper)
-        return mapper.map_record(record).values(**self.options)
+        return mapper.map_record(record).values(**self.options)"""
 
 
-@prestashop
+"""@prestashop
 class ManufacturerExportMapper(TranslationPrestashopExportMapper):
     # To extend in connector_prestashop_manufacturer module
     _model_name = 'prestashop.product.template'
@@ -287,4 +288,4 @@ class ManufacturerExportMapper(TranslationPrestashopExportMapper):
 
     @mapping
     def manufacturer(self, record):
-        return {}
+        return {}"""

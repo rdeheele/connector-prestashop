@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<openerp>
-    <data>
+<odoo>
+<!--
         <record model="ir.ui.view" id="active_product_form">
             <field name="name">active.product.form</field>
             <field name="model">active.deactive.products</field>
@@ -57,5 +57,5 @@
                     view_id="deactive_product_form"
                     key2="client_action_multi"
                     id="act_deactive_products"/>
-    </data>
-</openerp>
+-->
+</odoo>

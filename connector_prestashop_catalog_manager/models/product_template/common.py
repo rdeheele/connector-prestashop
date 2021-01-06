@@ -2,8 +2,21 @@
 # © 2016 Sergio Teruel <sergio.teruel@tecnativa.com>
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 
-from openerp import models, fields
-import openerp.addons.decimal_precision as dp
+from odoo import models, fields
+from odoo.addons import decimal_precision as dp
+from odoo.addons.component.core import Component
+from odoo.addons.component_event import skip_if
+
+
+class ProductTemplate(models.Model):
+    _inherit = 'product.template'
+
+    def unlink(self):
+        for binding in self.prestashop_bind_ids:
+            with binding.backend_id.work_on('prestashop.product.template') as work:
+                deleter = work.component(usage='record.export.deleter')
+                deleter.run('products', binding.id)
+        super(ProductTemplate, self).unlink()
 
 
 class PrestashopProductTemplate(models.Model):

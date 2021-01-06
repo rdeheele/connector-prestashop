@@ -1,19 +1,20 @@
 # -*- coding: utf-8 -*-
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from openerp.addons.connector.unit.mapper import mapping
-from openerp.addons.connector_prestashop.unit.exporter import \
+from odoo.addons.connector.components.mapper import mapping
+from odoo.addons.component.core import Component
+"""from openerp.addons.connector_prestashop.unit.exporter import \
     PrestashopExporter
 from openerp.addons.connector_prestashop.unit.mapper import (
     PrestashopExportMapper
-)
-from openerp.addons.connector_prestashop.unit.backend_adapter import (
+)"""
+from openerp.addons.connector_prestashop.components.backend_adapter import (
     PrestaShopWebServiceImage
 )
-from openerp.addons.connector_prestashop.backend import prestashop
+#from openerp.addons.connector_prestashop.backend import prestashop
 
-from openerp import models, fields
-from openerp.tools.translate import _
+from odoo import models, fields
+from odoo.tools.translate import _
 
 import os
 import os.path
@@ -25,9 +26,14 @@ class ProductImage(models.Model):
     front_image = fields.Boolean(string='Front image')
 
 
-@prestashop
-class ProductImageExport(PrestashopExporter):
-    _model_name = 'prestashop.product.image'
+class ProductImageExporter(Component):
+    _name = 'prestashop.product.image.exporter'
+    _inherit = 'prestashop.exporter'
+    _apply_on = ['prestashop.product.image']
+
+    def _create(self, record):
+        res = super(ProductImageExporter, self)._create(record)
+        return res['prestashop']['image']['id']
 
     def _run(self, fields=None):
         """ Flow of the synchronization, implemented in inherited classes"""
@@ -62,6 +68,7 @@ class ProductImageExport(PrestashopExporter):
 
     def _link_image_to_url(self):
         """Change image storage to a url linked to product prestashop image"""
+        from odoo.addons.connector_prestashop.components.backend_adapter import PrestashopWebServiceImage
         api = PrestaShopWebServiceImage(
             api_url=self.backend_record.location,
             api_key=self.backend_record.webservice_key)
@@ -69,17 +76,18 @@ class ProductImageExport(PrestashopExporter):
             'id_image': str(self.prestashop_id),
             'type': 'image/jpeg',
         })
-        if self.binding.url != full_public_url:
+        """if self.binding.url != full_public_url:
             self.binding.with_context(connector_no_export=True).write({
                 'url': full_public_url,
                 'file_db_store': False,
                 'storage': 'url',
-            })
+            })"""
 
 
-@prestashop
-class ProductImageExportMapper(PrestashopExportMapper):
-    _model_name = 'prestashop.product.image'
+class ProductImageExportMapper(Component):
+    _name = 'prestashop.product.image.export.mapper'
+    _inherit = 'prestashop.export.mapper'
+    _apply_on = ['prestashop.product.image']
 
     direct = [
         ('name', 'name'),
@@ -124,12 +132,13 @@ class ProductImageExportMapper(PrestashopExportMapper):
             product_tmpl = record.env['product.template'].browse(
                 record.odoo_id.owner_id)
         binder = self.binder_for('prestashop.product.template')
-        ps_product_id = binder.to_backend(product_tmpl, wrap=True)
+        ps_product_id = binder.to_external(product_tmpl, wrap=True)
         return {'id_product': ps_product_id}
 
     @mapping
     def extension(self, record):
-        return {'extension': self._get_file_name(record)[1]}
+        #extension = self._get_file_name(record)[1]
+        return {'extension': '.jpg'}
 
     @mapping
     def legend(self, record):
@@ -137,7 +146,8 @@ class ProductImageExportMapper(PrestashopExportMapper):
 
     @mapping
     def filename(self, record):
-        file_name = record.filename
+        """file_name = record.filename
         if not file_name:
-            file_name = '.'.join(self._get_file_name(record))
+            file_name = '.'.join(self._get_file_name(record))"""
+        file_name = record.attachment_id.name
         return {'filename': file_name}

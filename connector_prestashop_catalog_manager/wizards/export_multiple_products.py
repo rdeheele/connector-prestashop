@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from openerp import models, fields, api
+from odoo import models, fields, api
 import unicodedata
 import re
 
@@ -27,11 +27,9 @@ def get_slug(name):
 class ExportMultipleProducts(models.TransientModel):
     _name = 'export.multiple.products'
 
-    @api.multi
     def _default_backend(self):
         return self.env['prestashop.backend'].search([], limit=1).id
 
-    @api.multi
     def _default_shop(self):
         return self.env['prestashop.shop'].search([], limit=1).id
 
@@ -76,7 +74,6 @@ class ExportMultipleProducts(models.TransientModel):
                         'categ_ids': [(3, max_parent['categ_id'])],
                     })
 
-    @api.multi
     def set_category(self):
         product_obj = self.env['product.template']
         for product in product_obj.browse(self.env.context['active_ids']):
@@ -105,13 +102,11 @@ class ExportMultipleProducts(models.TransientModel):
                 return False
         return True
 
-    @api.multi
     def export_variant_stock(self):
         template_obj = self.env['product.template']
         products = template_obj.browse(self.env.context['active_ids'])
         products.update_prestashop_quantities()
 
-    @api.multi
     def create_prestashop_template(self, product):
         presta_tmpl_obj = self.env['prestashop.product.template']
         return presta_tmpl_obj.create({
@@ -121,7 +116,6 @@ class ExportMultipleProducts(models.TransientModel):
             'odoo_id': product.id,
         })
 
-    @api.multi
     def export_products(self):
         self.ensure_one()
         product_obj = self.env['product.template']
@@ -133,11 +127,11 @@ class ExportMultipleProducts(models.TransientModel):
                 ('default_shop_id', '=', self.shop_id.id),
             ])
             if not presta_tmpl:
-                self._check_images(product)
+                """self._check_images(product)
                 cat = self._check_category(product)
                 var = self._check_variants(product)
                 if not(var and cat):
-                    continue
+                    continue"""
                 self.create_prestashop_template(product)
             else:
                 for tmpl in presta_tmpl:
