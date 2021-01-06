@@ -173,9 +173,9 @@ class SaleOrderImportMapper(Component):
     children = [
         (_get_sale_order_lines,
          'prestashop_order_line_ids', 'prestashop.sale.order.line'),
-        (_get_discounts_lines,
-         'prestashop_discount_line_ids', 'prestashop.sale.order.line.discount')
     ]
+    """    (_get_discounts_lines,
+         'prestashop_discount_line_ids', 'prestashop.sale.order.line.discount')"""
 
     def _map_child(self, map_record, from_attr, to_attr, model_name):
         source = map_record.source
