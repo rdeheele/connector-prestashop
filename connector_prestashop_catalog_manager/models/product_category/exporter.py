@@ -5,7 +5,7 @@ from odoo.addons.connector.components.mapper import mapping
 from odoo.addons.component.core import Component
 
 from odoo.addons.connector_prestashop.components.exporter import (
-    PrestashopExporter,)
+    PrestashopExporter,
 )
 
 from odoo.addons.connector_prestashop.components.mapper import (
