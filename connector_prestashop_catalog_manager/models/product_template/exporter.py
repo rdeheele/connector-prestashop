@@ -205,6 +205,10 @@ class ProductTemplateExportMapper(Component):
         ('description_html', 'description'),
     ]
 
+    @mapping
+    def state(self, record):
+        return {'state': '1'}
+
     def _get_factor_tax(self, tax):
         return (1 + tax.amount / 100) if tax.price_include else 1.0
 
