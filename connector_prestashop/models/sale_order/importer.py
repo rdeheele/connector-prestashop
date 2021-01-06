@@ -252,6 +252,7 @@ class SaleOrderImportMapper(Component):
 
     @mapping
     def payment(self, record):
+        return {'payment_mode_id':7}
         binder = self.binder_for('account.payment.mode')
         mode = binder.to_internal(record['payment'])
         assert mode, ("import of error fail in SaleImportRule.check "
