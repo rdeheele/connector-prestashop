@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<openerp>
-    <data>
-        <record model="ir.ui.view" id="sync_products_form">
+<odoo>
+<!--        <record model="ir.ui.view" id="sync_products_form">
             <field name="name">sync.products.form</field>
             <field name="model">sync.products</field>
             <field name="arch" type="xml">
@@ -26,5 +25,5 @@
                     target="new"
                     key2="client_action_multi"
                     id="act_presta_sync_products"/>
-    </data>
-</openerp>
+-->
+</odoo>

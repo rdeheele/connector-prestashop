@@ -22,7 +22,6 @@ class ProductCategoryExporter(Component):
     _apply_on = ['prestashop.product.category']
 
     """def _export_dependencies(self):
-        """ Export the dependencies for the category"""
         category_binder = self.binder_for('prestashop.product.category')
         categories_obj = self.session.env['prestashop.product.category']
         for category in self.binding:
