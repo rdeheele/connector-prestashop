@@ -283,9 +283,9 @@ class SaleOrderImportMapper(Component):
                 pytz.utc))
         return {'date_order': date_order}
 
-    def finalize(self, map_record, values):
+    """def finalize(self, map_record, values):
         onchange = self.component('ecommerce.onchange.manager.sale.order')
-        return onchange.play(values, values['prestashop_order_line_ids'])
+        return onchange.play(values, values['prestashop_order_line_ids'])"""
 
 
 class SaleOrderImporter(Component):
