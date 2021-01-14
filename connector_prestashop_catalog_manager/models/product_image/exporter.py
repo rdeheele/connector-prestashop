@@ -8,7 +8,7 @@ from odoo.addons.component.core import Component
 from openerp.addons.connector_prestashop.unit.mapper import (
     PrestashopExportMapper
 )"""
-from openerp.addons.connector_prestashop.components.backend_adapter import (
+from odoo.addons.connector_prestashop.components.backend_adapter import (
     PrestaShopWebServiceImage
 )
 #from openerp.addons.connector_prestashop.backend import prestashop
@@ -68,7 +68,7 @@ class ProductImageExporter(Component):
 
     def _link_image_to_url(self):
         """Change image storage to a url linked to product prestashop image"""
-        from odoo.addons.connector_prestashop.components.backend_adapter import PrestashopWebServiceImage
+        #from odoo.addons.connector_prestashop.components.backend_adapter import PrestashopWebServiceImage
         api = PrestaShopWebServiceImage(
             api_url=self.backend_record.location,
             api_key=self.backend_record.webservice_key)
@@ -146,8 +146,8 @@ class ProductImageExportMapper(Component):
 
     @mapping
     def filename(self, record):
-        """file_name = record.filename
+        file_name = record.filename
         if not file_name:
-            file_name = '.'.join(self._get_file_name(record))"""
-        file_name = record.attachment_id.name
+            file_name = '.'.join(self._get_file_name(record))
+        #file_name = record.attachment_id.name
         return {'filename': file_name}
