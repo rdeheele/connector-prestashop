@@ -7,8 +7,8 @@ class ProductImageDelete(Component):
     _name = 'prestashop.product.image.deleter'
     _inherit = 'prestashop.deleter'
     _apply_on = 'prestashop.product.image'
-
-    _model_name = 'prestashop.product.image'
+    _usage = 'record.exporter.deleter'
+    #_model_name = 'prestashop.product.image'
 
     def delete(self, id):
         """ Delete a record on the external system """

@@ -17,6 +17,14 @@ class ProductImage(models.Model):
         string='PrestaShop Bindings',
     )
 
+    def unlink(self):
+        template = self.env['prestashop.product.template'].search([('odoo_id','=',self.prestashop_bind_ids[0].owner_id)])
+        for binding in self.prestashop_bind_ids:
+            with binding.backend_id.work_on('prestashop.product.image') as work:
+                deleter = work.component(usage='record.exporter.deleter')
+                deleter.run('/images/products/' + str(template.prestashop_id), binding.prestashop_id)
+        super(ProductImage, self).unlink()
+
 
 class PrestashopProductImage(models.Model):
     _name = 'prestashop.product.image'
@@ -73,7 +81,7 @@ class ProductImageAdapter(Component):
         url = '{}/{}'.format(self._prestashop_model, attributes['id_product'])
         return api.add(url, files=[(
             'image',
-            attributes['filename'].encode('utf-8'),
+            attributes['filename'],
             base64.b64decode(attributes['content'])
         )])
 
@@ -89,7 +97,7 @@ class ProductImageAdapter(Component):
             pass
         return api.add(url, files=[(
             'image',
-            attributes['filename'].encode('utf-8'),
+            attributes['filename'],
             base64.b64decode(attributes['content'])
         )])
 
