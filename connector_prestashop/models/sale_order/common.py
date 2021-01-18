@@ -231,7 +231,7 @@ class OrderDiscountAdapter(Component):
     _prestashop_model = 'order_discounts'
 
 
-class PrestashopSaleOrderListener(Component):
+"""class PrestashopSaleOrderListener(Component):
     _name = 'prestashop.sale.order.listener'
     _inherit = 'base.event.listener'
     _apply_on = ['sale.order']
@@ -246,4 +246,4 @@ class PrestashopSaleOrderListener(Component):
             )
             if states:
                 for binding in record.prestashop_bind_ids:
-                    binding.with_delay(priority=20).export_sale_state()
+                    binding.with_delay(priority=20).export_sale_state()"""
