@@ -11,16 +11,23 @@ from odoo.addons.component_event import skip_if
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
-    def unlink(self):
+    """def unlink(self):
         for binding in self.prestashop_bind_ids:
             with binding.backend_id.work_on('prestashop.product.template') as work:
                 deleter = work.component(usage='record.export.deleter')
                 deleter.run('products', binding.id)
-        super(ProductTemplate, self).unlink()
+        super(ProductTemplate, self).unlink()"""
 
 
 class PrestashopProductTemplate(models.Model):
     _inherit = 'prestashop.product.template'
+
+    def unlink(self):
+        for template in self:
+            with template.backend_id.work_on('prestashop.product.template') as work:
+                deleter = work.component(usage='record.export.deleter')
+                deleter.run('products', template.id)
+        super(PrestashopProductTemplate, self).unlink()
 
     meta_title = fields.Char(
         string='Meta Title',
