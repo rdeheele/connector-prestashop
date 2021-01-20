@@ -250,14 +250,13 @@ class SaleOrderImportMapper(Component):
     def backend_id(self, record):
         return {'backend_id': self.backend_record.id}
 
-    """@mapping
+    @mapping
     def payment(self, record):
-        return {'payment_mode_id':7}
         binder = self.binder_for('account.payment.mode')
         mode = binder.to_internal(record['payment'])
         assert mode, ("import of error fail in SaleImportRule.check "
                       "when the payment mode is missing")
-        return {'payment_mode_id': mode.id}"""
+        return {'payment_mode_id': mode.id}
 
     @mapping
     def carrier_id(self, record):
