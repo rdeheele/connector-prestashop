@@ -464,8 +464,11 @@ class SaleOrderLineMapper(Component):
 
     @mapping
     def tax_id(self, record):
-        taxes = record.get('associations', {}).get('taxes', {}).get(
-            self.backend_record.get_version_ps_key('tax'), [])
+        ps_taxes = record.get('associations', {}).get('taxes', {})
+        if 'tax' in ps_taxes:
+            taxes = ps_taxes['tax']
+        else:
+            taxes = []
         if not isinstance(taxes, list):
             taxes = [taxes]
         result = self.env['account.tax'].browse()
