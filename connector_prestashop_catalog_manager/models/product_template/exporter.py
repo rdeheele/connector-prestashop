@@ -224,7 +224,7 @@ class ProductTemplateExportMapper(Component):
                     round(record.list_price / self._get_factor_tax(tax), 6))
             }
         else:
-            return {'price': str(record.list_price)}
+            return {'price': str(round(record.list_price, 6))}
 
     @mapping
     def reference(self, record):
