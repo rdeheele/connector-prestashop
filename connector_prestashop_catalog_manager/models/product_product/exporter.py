@@ -22,10 +22,6 @@ _logger = logging.getLogger(__name__)
     _model_name = 'prestashop.product.combination'
 
     def _create(self, record):
-        """
-        :param record: browse record to create in prestashop
-        :return integer: Prestashop record id
-        """
         res = super(ProductCombinationExport, self)._create(record)
         return res['prestashop']['combination']['id']
 
@@ -51,7 +47,6 @@ _logger = logging.getLogger(__name__)
                         image_content)
 
     def _export_dependencies(self):
-        """ Export the dependencies for the product"""
         # TODO add export of category
         attribute_binder = self.binder_for(
             'prestashop.product.combination.option')
