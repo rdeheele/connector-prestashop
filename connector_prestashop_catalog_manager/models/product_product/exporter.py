@@ -208,8 +208,10 @@ class ProductCombinationOptionExportMapper(Component):
 
 
 #@prestashop
-class ProductCombinationOptionValueExport(PrestashopExporter):
-    _model_name = 'prestashop.product.combination.option.value'
+class ProductCombinationOptionValueExporter(Component):
+    _name = 'prestashop.product.combination.option.value.exporter'
+    _inherit = 'prestashop.exporter'
+    _apply_on = ['prestashop.product.combination.option.value']
 
     def _create(self, record):
         res = super(ProductCombinationOptionValueExport, self)._create(record)
@@ -228,10 +230,10 @@ class ProductCombinationOptionValueExport(PrestashopExporter):
         return
 
 
-#@prestashop
-class ProductCombinationOptionValueExportMapper(
-        TranslationPrestashopExportMapper):
-    _model_name = 'prestashop.product.combination.option.value'
+class ProductCombinationOptionValueExportMapper(Component):
+    _name = 'prestashop.product.combination.option.value.export.mapper'
+    _inherit = 'translation.prestashop.export.mapper'
+    _apply_on = ['prestashop.product.combination.option.value']
 
     direct = [('name', 'value')]
     # handled by base mapping `translatable_fields`
