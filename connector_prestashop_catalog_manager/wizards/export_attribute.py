@@ -31,12 +31,10 @@ class PrestashopExportAttribute(models.TransientModel):
         for attribute in attribute_obj.browse(self.env.context['active_ids']):
             ps_attribute = ps_attribute_obj.search([
                 ('odoo_id', '=', attribute.id),
-                ('backend_id', '=', self.backend_id.id),
-                ('default_shop_id', '=', self.shop_id.id),
+                ('backend_id', '=', self.backend_id.id)
             ])
             if not ps_attribute:
                 ps_attribute_obj.create({
                     'backend_id': self.backend_id.id,
-                    'default_shop_id': self.shop_id.id,
                     'odoo_id': attribute.id,
                 })
