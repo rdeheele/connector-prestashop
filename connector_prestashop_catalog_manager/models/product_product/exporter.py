@@ -1,16 +1,15 @@
 # -*- coding: utf-8 -*-
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from openerp.addons.connector.unit.mapper import mapping
+from odoo.addons.connector.components.mapper import mapping
 
-from openerp.addons.connector_prestashop.unit.exporter import (
+from odoo.addons.connector_prestashop.components.exporter import (
     TranslationPrestashopExporter,
-    export_record,
     PrestashopExporter,
 )
-from openerp.addons.connector_prestashop.unit.mapper import \
+from odoo.addons.connector_prestashop.components.mapper import \
     TranslationPrestashopExportMapper
-from openerp.addons.connector_prestashop.backend import prestashop
+#from openerp.addons.connector_prestashop.backend import prestashop
 from collections import OrderedDict
 import logging
 
@@ -18,8 +17,8 @@ import logging
 _logger = logging.getLogger(__name__)
 
 
-@prestashop
-class ProductCombinationExport(TranslationPrestashopExporter):
+#@prestashop
+"""class ProductCombinationExport(TranslationPrestashopExporter):
     _model_name = 'prestashop.product.combination'
 
     def _create(self, record):
@@ -102,11 +101,11 @@ class ProductCombinationExport(TranslationPrestashopExporter):
             self.session.context).update_prestashop_qty()
 
     def _after_export(self):
-        self.update_quantities()
+        self.update_quantities()"""
 
 
-@prestashop
-class ProductCombinationExportMapper(TranslationPrestashopExportMapper):
+#@prestashop
+"""class ProductCombinationExportMapper(TranslationPrestashopExportMapper):
     _model_name = 'prestashop.product.combination'
 
     direct = [
@@ -182,10 +181,10 @@ class ProductCombinationExportMapper(TranslationPrestashopExportMapper):
             associations['images'] = {
                 'image': self._get_combination_image(record)
             }
-        return {'associations': associations}
+        return {'associations': associations}"""
 
 
-@prestashop
+#@prestashop
 class ProductCombinationOptionExport(PrestashopExporter):
     _model_name = 'prestashop.product.combination.option'
 
@@ -194,7 +193,7 @@ class ProductCombinationOptionExport(PrestashopExporter):
         return res['prestashop']['product_option']['id']
 
 
-@prestashop
+#@prestashop
 class ProductCombinationOptionExportMapper(TranslationPrestashopExportMapper):
     _model_name = 'prestashop.product.combination.option'
 
@@ -209,7 +208,7 @@ class ProductCombinationOptionExportMapper(TranslationPrestashopExportMapper):
     ]
 
 
-@prestashop
+#@prestashop
 class ProductCombinationOptionValueExport(PrestashopExporter):
     _model_name = 'prestashop.product.combination.option.value'
 
@@ -230,7 +229,7 @@ class ProductCombinationOptionValueExport(PrestashopExporter):
         return
 
 
-@prestashop
+#@prestashop
 class ProductCombinationOptionValueExportMapper(
         TranslationPrestashopExportMapper):
     _model_name = 'prestashop.product.combination.option.value'
