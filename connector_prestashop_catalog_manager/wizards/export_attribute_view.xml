@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="export_attribute_form" model="ir.ui.view">
+        <field name="name">wiz.prestashop.export.attribute.form</field>
+        <field name="model">wiz.prestashop.export.attribute</field>
+        <field name="arch" type="xml">
+            <form string="Export Attributes">
+                <group>
+                    <field name="backend_id"/>
+                    <field name="shop_id" domain="[('backend_id', '=', backend_id)]"/>
+                </group>
+                <footer>
+                    <button name="export_attributes" type="object"
+                            string="Export" class="oe_highlight"/>
+                    or
+                    <button string="Cancel" class="oe_link"
+                            special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <act_window id="act_export_prestashop_attribute"
+                name="Export To PrestaShop"
+                res_model="wiz.prestashop.export.attribute"
+                binding_model="product.attribute"
+                view_mode="form"
+                target="new"/>
+
+</odoo>

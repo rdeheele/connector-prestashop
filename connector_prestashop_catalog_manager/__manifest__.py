@@ -20,9 +20,10 @@
     "website": "https://github.com/OCA/connector-prestashop",
     "category": "Connector",
     "data": [
-        #'views/product_attribute_view.xml',
+        'views/product_attribute_view.xml',
         'views/product_view.xml',
         'wizards/export_category_view.xml',
+        'wizards/export_attribute_view.xml',
         'wizards/export_multiple_products_view.xml',
         'wizards/sync_products_view.xml',
         'wizards/active_deactive_products_view.xml',
