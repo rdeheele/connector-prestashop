@@ -182,7 +182,7 @@ _logger = logging.getLogger(__name__)
 
 #@prestashop
 class ProductCombinationOptionExporter(Component):
-    _model_name = 'prestashop.product.combination.option.exporter'
+    _name = 'prestashop.product.combination.option.exporter'
     _inherit = 'prestashop.exporter'
     _apply_on = ['prestashop.product.combination.option']
 
