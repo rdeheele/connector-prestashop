@@ -2,6 +2,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 from odoo.addons.connector.components.mapper import mapping
+from odoo.addons.component.core import Component
 
 from odoo.addons.connector_prestashop.components.exporter import (
     TranslationPrestashopExporter,
@@ -180,17 +181,20 @@ _logger = logging.getLogger(__name__)
 
 
 #@prestashop
-class ProductCombinationOptionExport(PrestashopExporter):
-    _model_name = 'prestashop.product.combination.option'
+class ProductCombinationOptionExporter(Component):
+    _model_name = 'prestashop.product.combination.option.exporter'
+    _inherit = 'prestashop.exporter'
+    _apply_on = ['prestashop.product.combination.option']
 
     def _create(self, record):
         res = super(ProductCombinationOptionExport, self)._create(record)
         return res['prestashop']['product_option']['id']
 
 
-#@prestashop
-class ProductCombinationOptionExportMapper(TranslationPrestashopExportMapper):
-    _model_name = 'prestashop.product.combination.option'
+class ProductCombinationOptionExportMapper(Component):
+    _name = 'prestashop.product.combination.option.export.mapper'
+    _inherit = 'translation.prestashop.export.mapper'
+    _apply_on = ['prestashop.product.combination.option']
 
     direct = [
         ('prestashop_position', 'position'),
