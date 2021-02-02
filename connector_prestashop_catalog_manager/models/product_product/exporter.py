@@ -187,7 +187,7 @@ class ProductCombinationOptionExporter(Component):
     _apply_on = ['prestashop.product.combination.option']
 
     def _create(self, record):
-        res = super(ProductCombinationOptionExport, self)._create(record)
+        res = super(ProductCombinationOptionExporter, self)._create(record)
         return res['prestashop']['product_option']['id']
 
 
@@ -198,7 +198,7 @@ class ProductCombinationOptionExportMapper(Component):
 
     direct = [
         ('prestashop_position', 'position'),
-        ('group_type', 'group_type'),
+        ('display_type', 'group_type'),
     ]
 
     _translatable_fields = [
@@ -214,7 +214,7 @@ class ProductCombinationOptionValueExporter(Component):
     _apply_on = ['prestashop.product.combination.option.value']
 
     def _create(self, record):
-        res = super(ProductCombinationOptionValueExport, self)._create(record)
+        res = super(ProductCombinationOptionValueExporter, self)._create(record)
         return res['prestashop']['product_option_value']['id']
 
     def _export_dependencies(self):
