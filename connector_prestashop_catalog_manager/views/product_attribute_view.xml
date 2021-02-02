@@ -10,13 +10,14 @@
             <field name="model">product.attribute</field>
             <field name="inherit_id" ref="product.product_attribute_view_form"</field>
             <field name="arch" type="xml">
-            <xpath expr="//notebook/page[@string='Attribute Values']" position="after">
+            <xpath expr="//notebook/[last()]" position="inside">
                 <page string="prestashop fields">
                     <group string="Prestashop Bindings" colspan="4">
                          <field name="prestashop_bind_ids" nolabel="1"/>
                     </group>
                 </page>
             </xpath>
+            </field>
         </record>
 
         <record id="product_attribute_connector_presta_form_view"
