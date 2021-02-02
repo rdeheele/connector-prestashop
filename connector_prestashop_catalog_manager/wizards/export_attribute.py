@@ -28,6 +28,8 @@ class PrestashopExportAttribute(models.TransientModel):
         self.ensure_one()
         attribute_obj = self.env['product.attribute']
         ps_attribute_obj = self.env['prestashop.product.combination.option']
+        value_obj = self.env['product.attribute.value']
+        ps_value_obj = self.env['prestashop.product.combination.option.value']
         for attribute in attribute_obj.browse(self.env.context['active_ids']):
             ps_attribute = ps_attribute_obj.search([
                 ('odoo_id', '=', attribute.id),
@@ -38,3 +40,11 @@ class PrestashopExportAttribute(models.TransientModel):
                     'backend_id': self.backend_id.id,
                     'odoo_id': attribute.id,
                 })
+            if ps_attribute:
+                if attribute.value_ids:
+                    for value in attribute.value_ids:
+                        ps_value = ps_value_obj.search([('odoo_id','=',value.id)])
+                        if not ps_value:
+                            ps_value_obj.create({
+                                'backend_id': self.backend_id.id,
+                                'odoo_id': value.id})

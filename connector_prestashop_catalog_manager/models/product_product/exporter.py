@@ -217,8 +217,7 @@ class ProductCombinationOptionValueExporter(Component):
         res = super(ProductCombinationOptionValueExporter, self)._create(record)
         return res['prestashop']['product_option_value']['id']
 
-    def _export_dependencies(self):
-        """ Export the dependencies for the record"""
+    """def _export_dependencies(self):
         attribute_id = self.binding.attribute_id.id
         # export product attribute
         binder = self.binder_for('prestashop.product.combination.option')
@@ -227,7 +226,7 @@ class ProductCombinationOptionValueExporter(Component):
                 TranslationPrestashopExporter,
                 'prestashop.product.combination.option')
             exporter.run(attribute_id)
-        return
+        return"""
 
 
 class ProductCombinationOptionValueExportMapper(Component):
@@ -241,20 +240,20 @@ class ProductCombinationOptionValueExportMapper(Component):
         ('name', 'name'),
     ]
 
-    @mapping
+    """@mapping
     def prestashop_product_attribute_id(self, record):
         attribute_binder = self.binder_for(
             'prestashop.product.combination.option.value')
         return {
             'id_feature': attribute_binder.to_backend(
                 record.attribute_id.id, wrap=True)
-        }
+        }"""
 
     @mapping
     def prestashop_product_group_attribute_id(self, record):
         attribute_binder = self.binder_for(
             'prestashop.product.combination.option')
         return {
-            'id_attribute_group': attribute_binder.to_backend(
+            'id_attribute_group': attribute_binder.to_external(
                 record.attribute_id.id, wrap=True),
         }
