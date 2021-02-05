@@ -24,7 +24,7 @@ class ProductTemplateExporter(Component):
     def _update(self, data):
         """ Update an Prestashop record """
         assert self.prestashop_id
-        #self.export_variants()
+        self.export_variants()
         #self.check_images()
         self.backend_adapter.write(self.prestashop_id, data)
 
@@ -100,9 +100,9 @@ class ProductTemplateExporter(Component):
                         value, 'prestashop.product.combination.option.value')"""
 
     def export_variants(self):
-        """combination_obj = self.session.env['prestashop.product.combination']
+        combination_obj = self.session.env['prestashop.product.combination']
         for product in self.binding.product_variant_ids:
-            if not product.attribute_value_ids:
+            if not product.product_template_attribute_value_ids:
                 continue
             combination_ext_id = combination_obj.search([
                 ('backend_id', '=', self.backend_record.id),
@@ -117,7 +117,7 @@ class ProductTemplateExporter(Component):
                     })
             # If a template has been modified then always update PrestaShop
             # combinations
-            export_record.delay(
+            """export_record.delay(
                 self.session,
                 'prestashop.product.combination',
                 combination_ext_id.id, priority=50,
@@ -165,7 +165,7 @@ class ProductTemplateExporter(Component):
 
     def _after_export(self):
         self.check_images()
-        #self.export_variants()
+        self.export_variants()
         #self.update_quantities()
 
 

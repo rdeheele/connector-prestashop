@@ -18,15 +18,16 @@ import logging
 _logger = logging.getLogger(__name__)
 
 
-#@prestashop
-"""class ProductCombinationExport(TranslationPrestashopExporter):
-    _model_name = 'prestashop.product.combination'
+class ProductCombinationExporter(Component):
+    _name = 'prestashop.product.combination.exporter'
+    _inherit = 'prestashop.exporter'
+    _apply_on = ['prestashop.product.combination']
 
     def _create(self, record):
-        res = super(ProductCombinationExport, self)._create(record)
+        res = super(ProductCombinationExporter, self)._create(record)
         return res['prestashop']['combination']['id']
 
-    def _export_images(self):
+    """def _export_images(self):
         if self.binding.image_ids:
             image_binder = self.binder_for('prestashop.product.image')
             for image_line in self.binding.image_ids:
@@ -45,9 +46,9 @@ _logger = logging.getLogger(__name__)
                         self.session,
                         'prestashop.product.image',
                         image_ext_id,
-                        image_content)
+                        image_content)"""
 
-    def _export_dependencies(self):
+    """def _export_dependencies(self):
         # TODO add export of category
         attribute_binder = self.binder_for(
             'prestashop.product.combination.option')
@@ -90,19 +91,20 @@ _logger = logging.getLogger(__name__)
                     self.session,
                     'prestashop.product.combination.option.value',
                     value_binding.id)
-        # self._export_images()
+        # self._export_images()"""
 
     def update_quantities(self):
-        self.binding.odoo_id.with_context(
-            self.session.context).update_prestashop_qty()
+        """self.binding.odoo_id.with_context(
+            self.session.context).update_prestashop_qty()"""
 
     def _after_export(self):
-        self.update_quantities()"""
+        self.update_quantities()
 
 
-#@prestashop
-"""class ProductCombinationExportMapper(TranslationPrestashopExportMapper):
-    _model_name = 'prestashop.product.combination'
+class ProductCombinationExportMapper(Component):
+    _name = 'prestashop.product.combination.export.mapper'
+    _inherit = 'translation.prestashop.export.mapper'
+    _apply_on = ['prestashop.product.combination']
 
     direct = [
         ('default_code', 'reference'),
@@ -122,7 +124,7 @@ _logger = logging.getLogger(__name__)
 
     def get_main_template_id(self, record):
         template_binder = self.binder_for('prestashop.product.template')
-        return template_binder.to_backend(record.main_template_id.id)
+        return template_binder.to_external(record.main_template_id.id)
 
     @mapping
     def main_template_id(self, record):
@@ -150,8 +152,9 @@ _logger = logging.getLogger(__name__)
         option_value = []
         option_binder = self.binder_for(
             'prestashop.product.combination.option.value')
-        for value in record.attribute_value_ids:
-            value_ext_id = option_binder.to_backend(value.id, wrap=True)
+        for value in record.product_template_attribute_value_ids:
+            value_id = value.product_attribute_value_id.id
+            value_ext_id = option_binder.to_backend(value_id, wrap=True)
             if value_ext_id:
                 option_value.append({'id': value_ext_id})
         return option_value
@@ -160,7 +163,7 @@ _logger = logging.getLogger(__name__)
         images = []
         image_binder = self.binder_for('prestashop.product.image')
         for image in record.image_ids:
-            image_ext_id = image_binder.to_backend(image.id, wrap=True)
+            image_ext_id = image_binder.to_external(image.id, wrap=True)
             if image_ext_id:
                 images.append({'id': image_ext_id})
         return images
@@ -177,10 +180,9 @@ _logger = logging.getLogger(__name__)
             associations['images'] = {
                 'image': self._get_combination_image(record)
             }
-        return {'associations': associations}"""
+        return {'associations': associations}
 
 
-#@prestashop
 class ProductCombinationOptionExporter(Component):
     _name = 'prestashop.product.combination.option.exporter'
     _inherit = 'prestashop.exporter'
