@@ -100,7 +100,7 @@ class ProductTemplateExporter(Component):
                         value, 'prestashop.product.combination.option.value')"""
 
     def export_variants(self):
-        combination_obj = self.session.env['prestashop.product.combination']
+        combination_obj = self.env['prestashop.product.combination']
         for product in self.binding.product_variant_ids:
             if not product.product_template_attribute_value_ids:
                 continue

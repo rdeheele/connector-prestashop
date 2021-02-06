@@ -154,7 +154,7 @@ class ProductCombinationExportMapper(Component):
             'prestashop.product.combination.option.value')
         for value in record.product_template_attribute_value_ids:
             value_id = value.product_attribute_value_id.id
-            value_ext_id = option_binder.to_backend(value_id, wrap=True)
+            value_ext_id = option_binder.to_external(value_id, wrap=True)
             if value_ext_id:
                 option_value.append({'id': value_ext_id})
         return option_value
