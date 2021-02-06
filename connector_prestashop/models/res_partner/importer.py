@@ -29,6 +29,10 @@ class PartnerImportMapper(Component):
     ]
 
     @mapping
+    def sale_type(self, record):
+        return {'sale_type': 1}
+
+    @mapping
     def pricelist(self, record):
         binder = self.binder_for('prestashop.groups.pricelist')
         pricelist = binder.to_internal(record['id_default_group'], unwrap=True)
