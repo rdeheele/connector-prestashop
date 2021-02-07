@@ -31,6 +31,9 @@ class PrestashopProductCombinationOptionListener(Component):
     _inherit = 'base.connector.listener'
     _apply_on = ['prestashop.product.combination.option']
 
+    def on_record_create(self, record, fields=None):
+        record.with_delay().export_record()
+
     def on_record_write(self, record, fields=None):
         if not 'prestashop_id' in fields:
             with record.backend_id.work_on(record._name) as work:
@@ -52,6 +55,9 @@ class PrestashopProductCombinationOptionValueListener(Component):
     _name = 'prestashop.product.combination.option.value.listener'
     _inherit = 'base.connector.listener'
     _apply_on = ['prestashop.product.combination.option.value']
+
+    def on_record_create(self, record, fields=None):
+        record.with_delay().export_record()
 
     def on_record_write(self, record, fields=None):
         if not 'prestashop_id' in fields:
