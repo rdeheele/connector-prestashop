@@ -12,7 +12,10 @@
                 </group>
                 <footer>
                     <button name="export_attributes" type="object"
-                            string="Export" class="oe_highlight"/>
+                            string="Export Attribute" class="oe_highlight"/>
+                    or
+                    <button name="export_values" type="object"
+                            string="Export Values" class="oe_highlight"/>
                     or
                     <button string="Cancel" class="oe_link"
                             special="cancel"/>
