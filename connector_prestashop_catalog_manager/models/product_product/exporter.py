@@ -242,6 +242,11 @@ class ProductCombinationOptionValueExportMapper(Component):
         ('name', 'name'),
     ]
 
+    @mapping
+    def color(self, record):
+        if record['display_type'] == 'color':
+            return {'color':  record['html_color']}
+
     """@mapping
     def prestashop_product_attribute_id(self, record):
         attribute_binder = self.binder_for(
