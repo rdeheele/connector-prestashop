@@ -11,7 +11,6 @@ class ProductTemplateExporter(Component):
     _name = 'prestashop.product.template.exporter'
     _inherit = 'prestashop.exporter'
     _apply_on = ['prestashop.product.template']
-    _usage = 'template.exporter'
 
     def run(self, binding):
         super(ProductTemplateExporter, self).run(binding)
@@ -202,7 +201,7 @@ class ProductTemplateExportMapper(Component):
         ('available_now', 'available_now'),
         ('available_later', 'available_later'),
         ('description_short_html', 'description_short'),
-        ('description_html', 'description'),
+        ('description', 'description'),
     ]
 
     @mapping

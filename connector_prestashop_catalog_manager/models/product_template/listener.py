@@ -9,12 +9,12 @@ class PrestashopTemplateBindingExportListener(Component):
     def on_record_write(self, record, fields=None):
         if not 'prestashop_id' in fields:
             with record.backend_id.work_on(record._name) as work:
-                exporter = work.component(usage='template.exporter')
+                exporter = work.component(usage='record.exporter')
                 return exporter.run(record)
 
     def on_record_create(self, record, fields=None):
         with record.backend_id.work_on(record._name) as work:
-            exporter = work.component(usage='template.exporter')
+            exporter = work.component(usage='record.exporter')
             return exporter.run(record)
 
 
@@ -26,5 +26,5 @@ class PrestashopTemplateExportListener(Component):
     def on_record_write(self, record, fields=None):
         for binding in record.prestashop_bind_ids:
             with binding.backend_id.work_on('prestashop.product.template') as work:
-                exporter = work.component(usage='template.exporter')
+                exporter = work.component(usage='record.exporter')
                 return exporter.run(binding)

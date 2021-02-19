@@ -6,6 +6,7 @@ from odoo import models, fields
 from odoo.addons import decimal_precision as dp
 from odoo.addons.component.core import Component
 from odoo.addons.component_event import skip_if
+from odoo.addons.queue_job.job import job, related_action
 
 
 class ProductTemplate(models.Model):
@@ -22,12 +23,21 @@ class ProductTemplate(models.Model):
 class PrestashopProductTemplate(models.Model):
     _inherit = 'prestashop.product.template'
 
-    def unlink(self):
+
+    """def unlink(self):
         for template in self:
             with template.backend_id.work_on('prestashop.product.template') as work:
                 deleter = work.component(usage='record.export.deleter')
                 deleter.run('products', template.id)
-        super(PrestashopProductTemplate, self).unlink()
+        super(PrestashopProductTemplate, self).unlink()"""
+
+    @job(default_channel='root.prestashop')
+    @related_action(action='related_action_unwrap_binding')
+    def export_record(self):
+        self.ensure_one()
+        with self.backend_id.work_on(self._name) as work:
+            exporter = work.component(usage='record.exporter')
+            return exporter.run(self)
 
     meta_title = fields.Char(
         string='Meta Title',
