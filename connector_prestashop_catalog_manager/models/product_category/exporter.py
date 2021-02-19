@@ -72,9 +72,8 @@ class ProductCategoryExportMapper(Component):
 
     @mapping
     def parent_id(self, record):
-        if not record['parent_id']:
-            return {'id_parent': 2}
         category_binder = self.binder_for('prestashop.product.category')
         ext_categ_id = category_binder.to_external(
             record.parent_id.id, wrap=True)
-        return {'id_parent': ext_categ_id}
+        if ext_categ_id:
+            return {'id_parent': ext_categ_id}
