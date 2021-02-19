@@ -22,7 +22,7 @@ class ProductProductListener(Component):
     _apply_on = ['product.product']
 
     def on_record_write(self, record, fields=None):
-        for binding in record.prestashop_bind_ids:
+        for binding in record.prestashop_combinations_bind_ids:
             binding.with_delay().export_record()
 
 
