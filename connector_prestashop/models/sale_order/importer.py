@@ -287,6 +287,10 @@ class SaleOrderImportMapper(Component):
     def type_id(self, record):
         return {'type_id': 1}
 
+    @mapping
+    def workflow_process_id(self, record):
+        return {'workflow_process_id': 1}
+
     """def finalize(self, map_record, values):
         onchange = self.component('ecommerce.onchange.manager.sale.order')
         return onchange.play(values, values['prestashop_order_line_ids'])"""
