@@ -109,10 +109,10 @@ class ProductCombinationExportMapper(Component):
     direct = [
         ('default_code', 'reference'),
         ('active', 'active'),
-        ('barcode', 'ean13'),
         ('minimal_quantity', 'minimal_quantity'),
         ('weight', 'weight'),
     ]
+    #barcode, ean13
 
     def _get_factor_tax(self, tax):
         factor_tax = tax.price_include and (1 + tax.amount / 100) or 1.0
