@@ -18,11 +18,12 @@ class ProductImage(models.Model):
     )
 
     def unlink(self):
-        template = self.env['prestashop.product.template'].search([('odoo_id','=',self.prestashop_bind_ids[0].owner_id)])
-        for binding in self.prestashop_bind_ids:
-            with binding.backend_id.work_on('prestashop.product.image') as work:
-                deleter = work.component(usage='record.exporter.deleter')
-                deleter.run('/images/products/' + str(template.prestashop_id), binding.prestashop_id)
+        if self.prestashop_bind_ids:
+            template = self.env['prestashop.product.template'].search([('odoo_id','=',self.prestashop_bind_ids[0].owner_id)])
+            for binding in self.prestashop_bind_ids:
+                with binding.backend_id.work_on('prestashop.product.image') as work:
+                    deleter = work.component(usage='record.exporter.deleter')
+                    deleter.run('/images/products/' + str(template.prestashop_id), binding.prestashop_id)
         super(ProductImage, self).unlink()
 
 
