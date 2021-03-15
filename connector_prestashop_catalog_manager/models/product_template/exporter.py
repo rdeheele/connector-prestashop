@@ -235,6 +235,9 @@ class ProductTemplateExportMapper(Component):
         for category in record.categ_ids:
             ext_categ_ids.append(
                 {'id': binder.to_external(category.id, wrap=True)})
+        import logging
+        logging.info('categs:')
+        logging.info(ext_categ_ids)
         return ext_categ_ids
 
     @mapping
