@@ -76,4 +76,7 @@ class ProductCategoryExportMapper(Component):
         ext_categ_id = category_binder.to_external(
             record.parent_id.id, wrap=True)
         if ext_categ_id:
+            import logging
+            logging.info('id_parent:')
+            logging.info(ext_categ_id)
             return {'id_parent': ext_categ_id}
