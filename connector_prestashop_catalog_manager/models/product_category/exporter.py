@@ -80,3 +80,5 @@ class ProductCategoryExportMapper(Component):
             logging.info('id_parent:')
             logging.info(ext_categ_id)
             return {'id_parent': ext_categ_id}
+        else:
+            return {'id_parent': 1}
