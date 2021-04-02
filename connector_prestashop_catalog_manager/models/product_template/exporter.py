@@ -4,7 +4,7 @@
 from datetime import timedelta
 
 from odoo.addons.component.core import Component
-from odoo.addons.connector.components.mapper import mapping
+from odoo.addons.connector.components.mapper import (mapping, m2o_to_external)
 
 
 class ProductTemplateExporter(Component):
@@ -184,6 +184,7 @@ class ProductTemplateExportMapper(Component):
         ('additional_shipping_cost', 'additional_shipping_cost'),
         ('minimal_quantity', 'minimal_quantity'),
         ('on_sale', 'on_sale'),
+        (m2o_to_external('prestashop_default_category_id', binding='prestashop.product.category'), 'id_category_default'),
     ]
     #m2o_to_backend?
     #(m2o_to_backend('default_shop_id'), 'id_shop_default'),
