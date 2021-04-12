@@ -124,6 +124,7 @@
                     <field name="total_amount_tax"/>
                     <field name="total_shipping_tax_included"/>
                     <field name="total_shipping_tax_excluded"/>
+                    <field name="total_discount" widget="percentage"/>
                 </group>
             </form>
         </field>

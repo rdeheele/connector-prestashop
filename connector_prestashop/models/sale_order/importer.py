@@ -157,7 +157,14 @@ class SaleOrderImportMapper(Component):
             return [orders]
         return orders
 
-    def _get_discounts_lines(self, record):
+    @mapping
+    def get_discount(self, record):
+        if record['total_discounts'] == '0.00':
+            return []
+        percent = record['total_discounts'] / record['total_products_wt']
+        return {'total_discount': percent}
+
+    """def _get_discounts_lines(self, record):
         if record['total_discounts'] == '0.00':
             return []
         adapter = self.component(
@@ -168,7 +175,7 @@ class SaleOrderImportMapper(Component):
         discount_mappers = []
         for discount_id in discount_ids:
             discount_mappers.append({'id': discount_id})
-        return discount_mappers
+        return discount_mappers"""
 
     children = [
         (_get_sale_order_lines,

@@ -64,6 +64,11 @@ class PrestashopSaleOrder(models.Model):
         digits=dp.get_precision('Account'),
         readonly=True,
     )
+    total_discount = fields.Float(
+        string='Total Discount',
+        digits = dp.get_precision('Account')
+        readonly=True,
+    )
 
     @job(default_channel='root.prestashop')
     def import_orders_since(self, backend, since_date=None, **kwargs):
