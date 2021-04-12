@@ -66,7 +66,7 @@ class PrestashopSaleOrder(models.Model):
     )
     total_discount = fields.Float(
         string='Total Discount',
-        digits = dp.get_precision('Account')
+        digits = dp.get_precision('Account'),
         readonly=True,
     )
 
