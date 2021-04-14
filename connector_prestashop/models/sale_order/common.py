@@ -5,6 +5,7 @@ from odoo import models, fields, api
 from odoo.addons.queue_job.job import job, related_action
 from odoo.addons.component.core import Component
 from datetime import timedelta
+from decimal import *
 
 import logging
 _logger = logging.getLogger(__name__)
@@ -162,6 +163,8 @@ class PrestashopSaleOrderLine(models.Model):
             ('id', '=', vals['prestashop_order_id'])
         ], limit=1)
         vals['order_id'] = ps_sale_order.odoo_id.id
+        if ps_sale_order.total_discount and vals['product_id'] != 5:
+            vals['price_unit'] = vals['price_unit'] * Decimal(1 - ps_sale_order.total_discount)
         return super(PrestashopSaleOrderLine, self).create(vals)
 
 
