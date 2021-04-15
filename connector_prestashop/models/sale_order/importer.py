@@ -161,7 +161,7 @@ class SaleOrderImportMapper(Component):
     def get_discount(self, record):
         if record['total_discounts'] == '0.00':
             return []
-        percent = record['total_discounts'] / record['total_products_wt']
+        percent = float(record['total_discounts']) / float(record['total_products_wt'])
         return {'total_discount': percent}
 
     """def _get_discounts_lines(self, record):
