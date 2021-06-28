@@ -52,14 +52,12 @@ class ProductCategoryExportMapper(Component):
     _apply_on = ['prestashop.product.category']
 
     direct = [
-        ('active', 'active')
-    ]
-    """
-        ('sequence', 'position'),
+        ('active', 'active'),
         ('default_shop_id', 'id_shop_default'),
         ('active', 'active'),
         ('position', 'position')
-    ]"""
+    ]
+    #direct: ('sequence', 'position'),
     # handled by base mapping `translatable_fields`
     _translatable_fields = [
         ('name', 'name'),

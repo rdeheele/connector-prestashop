@@ -199,8 +199,8 @@ class ProductCombinationOptionExportMapper(Component):
     _apply_on = ['prestashop.product.combination.option']
 
     direct = [
-        ('prestashop_position', 'position'),
         ('display_type', 'group_type'),
+        ('prestashop_position', 'position'),
     ]
 
     _translatable_fields = [
